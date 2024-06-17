@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -13,24 +15,36 @@ import lombok.NoArgsConstructor;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Integer id;
+    private UUID id;
 
     private String name;
 
     private String description;
 
-    private String price;
+    private double priceInEuro;
 
     private int amount;
 
     private String imageLink;
 
-    private float weightInGram;
+    private double weightInGram;
 
     private String color;
 
-    private float diameterInCm;
+    private double diameterInCm;
+
+    public Product(String name, String description, double priceInEuro, int amount, String imageLink, double weightInGram,
+                   String color, double diameterInCm) {
+        this.name = name;
+        this.description = description;
+        this.priceInEuro = priceInEuro;
+        this.amount = amount;
+        this.imageLink = imageLink;
+        this.weightInGram = weightInGram;
+        this.color = color;
+        this.diameterInCm = diameterInCm;
+    }
 
 }
