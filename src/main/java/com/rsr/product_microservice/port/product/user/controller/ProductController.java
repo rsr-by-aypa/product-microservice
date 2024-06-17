@@ -18,7 +18,7 @@ public class ProductController {
     private static Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
     @PostMapping(path = "/product")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody Product createProduct(@RequestBody Product product) throws ProductIdAlreadyInUseException {
         LOGGER.info(String.format("Received Product -> %s", product));
         return productService.createProduct(product);

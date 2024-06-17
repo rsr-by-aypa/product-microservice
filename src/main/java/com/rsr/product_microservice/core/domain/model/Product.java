@@ -1,12 +1,9 @@
 package com.rsr.product_microservice.core.domain.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
-import javax.print.DocFlavor;
 import java.util.UUID;
 
 @Entity
