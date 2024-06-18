@@ -20,14 +20,14 @@ public class ProductController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
-    @PostMapping(path = "/product")
+    @PostMapping("/product")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody Product createProduct(@RequestBody Product product) throws ProductIdAlreadyInUseException {
         LOGGER.info(String.format("Received Product -> %s", product));
         return productService.createProduct(product);
     }
 
-    @GetMapping(path = "/products")
+    @GetMapping("/products")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<Product> getAllProducts() throws NoProductsException {
         List<Product> products = productService.getAllProducts();
