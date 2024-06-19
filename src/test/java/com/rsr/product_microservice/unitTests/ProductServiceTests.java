@@ -152,4 +152,20 @@ public class ProductServiceTests {
 
         }
     }
+
+    @Nested
+    @DisplayName("Test Cases for deleting a product with the ProductService")
+    class DeleteProductTests {
+
+        @Test
+        @DisplayName("Delete existing product properly")
+        void deleteProductProperlyTest() {
+            UUID productId = UUID.randomUUID();
+
+            when(productRepository.findById(productId)).thenReturn(Optional.of(new Product()));
+
+            productService.deleteProduct(productId);
+            verify(productRepository, times(1)).deleteById(productId);
+        }
+    }
 }

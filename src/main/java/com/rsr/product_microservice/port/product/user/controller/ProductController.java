@@ -5,6 +5,7 @@ import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
 import com.rsr.product_microservice.port.product.user.exceptions.ProductIdAlreadyInUseException;
+import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,11 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Product getProductById(@PathVariable("productId") UUID productId) {
            return productService.getProductById(productId);
+    }
+
+    @DeleteMapping(path="/product")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProduct (@RequestBody UUID productId)  throws UnknownProductIdException {
+        productService.deleteProduct(productId);
     }
 }
