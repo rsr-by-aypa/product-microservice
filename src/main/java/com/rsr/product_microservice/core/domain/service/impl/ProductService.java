@@ -54,5 +54,14 @@ public class ProductService implements IProductService {
                 .orElseThrow(UnknownProductIdException::new);
     }
 
+    @Override
+    public void deleteProduct(UUID productId) throws UnknownProductIdException {
+        if (productId == null) {
+            throw new IllegalArgumentException("Invalid Product ID");
+        }
+        productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
+        productRepository.deleteById(productId);
+    }
+
 
 }

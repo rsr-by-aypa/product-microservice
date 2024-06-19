@@ -32,6 +32,9 @@ public class ProductControllerUnitTests {
     @MockBean
     private ProductService mockProductService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     @Nested
     @DisplayName("Test cases for getting a product or multiple products via RestController - White Box Test")
@@ -86,6 +89,28 @@ public class ProductControllerUnitTests {
                     .andExpect(MockMvcResultMatchers.jsonPath(".name").value("Rock"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(rockId.toString()));
 
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Cases for deleting a product")
+    class DeleteProductTests {
+
+        @Test
+        @DisplayName("Properley Deleting an existing product")
+        void deleteProductProperlyTest() throws Exception {
+            //Product product = ProductFactory.getExampleValidProduct();
+            UUID productId = UUID.randomUUID();
+            //product.setId(productId);
+
+            String requestBody = objectMapper.writeValueAsString(productId);
+            System.out.println(requestBody);
+
+            mockMvc.perform(MockMvcRequestBuilders.delete("/product").
+                            contentType(MediaType.APPLICATION_JSON).content(requestBody)).
+                    andExpect(MockMvcResultMatchers.status().isOk());
+
+            Mockito.verify(mockProductService, Mockito.times(1)).deleteProduct(productId);
         }
     }
 

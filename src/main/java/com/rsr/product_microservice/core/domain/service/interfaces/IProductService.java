@@ -15,4 +15,6 @@ public interface IProductService {
     List<Product> getAllProducts() throws NoProductsException;
 
     Product getProductById(UUID productId) throws UnknownProductIdException;
+
+    void deleteProduct(UUID productId) throws UnknownProductIdException;
 }
