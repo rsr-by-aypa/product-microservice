@@ -5,6 +5,7 @@ import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepos
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
 import com.rsr.product_microservice.port.product.user.exceptions.ProductIdAlreadyInUseException;
+import com.rsr.product_microservice.port.product.user.exceptions.UnknownIdException;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -41,4 +43,16 @@ public class ProductService implements IProductService {
         }
         return products;
     }
+
+    @Override
+    public Product getProductById(UUID productId) throws UnknownIdException {
+        if (productId == null) {
+            throw new IllegalArgumentException("Invalid Product ID");
+        }
+
+        return productRepository.findById(productId)
+                .orElseThrow(UnknownIdException::new);
+    }
+
+
 }
