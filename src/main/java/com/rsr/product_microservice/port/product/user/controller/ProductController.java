@@ -1,6 +1,7 @@
 package com.rsr.product_microservice.port.product.user.controller;
 
 import com.rsr.product_microservice.core.domain.model.Product;
+import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
 import com.rsr.product_microservice.port.product.user.exceptions.ProductIdAlreadyInUseException;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class ProductController {
@@ -33,5 +35,11 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
         LOGGER.info(String.format("Returning all Products. Number of Products -> %s", products.size()));
         return products;
+    }
+
+    @GetMapping("/product/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Product getProductById(@PathVariable("productId") UUID productId) {
+           return productService.getProductById(productId);
     }
 }
