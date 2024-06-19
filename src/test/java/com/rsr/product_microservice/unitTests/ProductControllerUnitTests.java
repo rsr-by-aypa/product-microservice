@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 
 @SpringBootTest
@@ -56,6 +57,35 @@ public class ProductControllerUnitTests {
                     .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(products.size()))
                     .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Rock"))
                     .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Stone"));
+        }
+
+        @Test
+        void getProductByIdTest() throws Exception {
+            Product productRock = ProductFactory.getExampleValidProduct();
+            UUID rockId = UUID.randomUUID();
+            productRock.setName("Rock");
+            productRock.setId(rockId);
+
+            Product productStone = ProductFactory.getExampleValidProduct();
+            UUID stoneId = UUID.randomUUID();
+            productStone.setName("Stone");
+            productStone.setId(stoneId);
+
+            List<Product> products = Arrays.asList(
+                    productRock,
+                    productStone
+            );
+
+            Mockito.when(mockProductService.getAllProducts()).thenReturn(products);
+            Mockito.when(mockProductService.getProductById(rockId)).thenReturn(productRock);
+            Mockito.when(mockProductService.getProductById(stoneId)).thenReturn(productStone);
+
+            mockMvc.perform(MockMvcRequestBuilders.get("/product/" + rockId.toString())
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(MockMvcResultMatchers.status().isOk())
+                    .andExpect(MockMvcResultMatchers.jsonPath(".name").value("Rock"))
+                    .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(rockId.toString()));
+
         }
     }
 
