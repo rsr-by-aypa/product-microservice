@@ -6,7 +6,7 @@ import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.product.user.exceptions.UnknownIdException;
+import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -114,7 +114,7 @@ public class ProductServiceTests {
 
         @Test
         @DisplayName("Get one Product by Id - White Box")
-        void getOneProductByIdTest() throws UnknownIdException {
+        void getOneProductByIdTest() throws UnknownProductIdException {
             Product product = ProductFactory.getExampleValidProduct();
 
             //Mock Setup
@@ -148,7 +148,7 @@ public class ProductServiceTests {
             Product createdProduct = productService.createProduct(product);
 
             //getting Product by wrong ID
-            Assertions.assertThrows(UnknownIdException.class, () -> productService.getProductById(UUID.randomUUID()));
+            Assertions.assertThrows(UnknownProductIdException.class, () -> productService.getProductById(UUID.randomUUID()));
 
         }
     }
