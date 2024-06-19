@@ -1,11 +1,18 @@
 package com.rsr.product_microservice.unitTests;
 
 import com.rsr.product_microservice.ProductFactory;
+import com.rsr.product_microservice.ProductHelper;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
+import com.rsr.product_microservice.port.product.user.exceptions.UnknownIdException;
 import org.junit.jupiter.api.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -77,5 +84,72 @@ public class ProductServiceTests {
             verify(productRepository, never()).save(product);
         }
 
+    }
+
+    @Nested
+    @DisplayName("Test cases for getting a product or multiple")
+    class GetProductTests {
+
+        @Test
+        @DisplayName("Get All Products - White Box")
+        void getAllProductsTest() {
+            Product productStone = ProductFactory.getExampleValidProduct();
+            productStone.setName("Stone");
+
+            Product productRock = ProductFactory.getExampleValidProduct();
+            productRock.setName("Rock");
+
+            Product productGemstone =  ProductFactory.getExampleValidProduct();
+            productGemstone.setName("Gemstone");
+
+            List<Product> products = Arrays.asList(
+                    productRock, productStone, productGemstone
+            );
+
+            when(productRepository.findAll()).thenReturn(products);
+
+            List<Product> returnedProducts = productService.getAllProducts();
+            Assertions.assertTrue(ProductHelper.compareProductListsByName(products, returnedProducts));
+        }
+
+        @Test
+        @DisplayName("Get one Product by Id - White Box")
+        void getOneProductByIdTest() throws UnknownIdException {
+            Product product = ProductFactory.getExampleValidProduct();
+
+            //Mock Setup
+            UUID productId = UUID.randomUUID();
+            Product productWithId = ProductFactory.getExampleValidProduct();
+            productWithId.setId(productId);
+            when(productRepository.save(product)).thenReturn(productWithId);
+            when(productRepository.findById(productId)).thenReturn(Optional.of(productWithId));
+
+            //saving Product
+            Product createdProduct = productService.createProduct(product);
+
+            //getting Product by ID
+            Product returnedProduct = productService.getProductById(createdProduct.getId());
+            Assertions.assertEquals(returnedProduct.getId(), productId);
+        }
+
+        @Test
+        @DisplayName("Get Product by id with wrong id")
+        void getProductByWrongIdTest() {
+            Product product = ProductFactory.getExampleValidProduct();
+
+            //Mock Setup
+            UUID productId = UUID.randomUUID();
+            Product productWithId = ProductFactory.getExampleValidProduct();
+            productWithId.setId(productId);
+            when(productRepository.save(product)).thenReturn(productWithId);
+            when(productRepository.findById(productId)).thenReturn(Optional.of(productWithId));
+
+            //saving Product
+            Product createdProduct = productService.createProduct(product);
+
+            //getting Product by wrong ID
+            Assertions.assertThrows(UnknownIdException.class, () -> productService.getProductById(UUID.randomUUID()));
+
+        }
     }
 }
