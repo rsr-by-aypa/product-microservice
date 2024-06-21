@@ -1,11 +1,10 @@
-package com.rsr.product_microservice.port.product.user.controller;
+package com.rsr.product_microservice.port.user.controller;
 
 import com.rsr.product_microservice.core.domain.model.Product;
-import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
-import com.rsr.product_microservice.port.product.user.exceptions.ProductIdAlreadyInUseException;
-import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.user.exceptions.ProductIdAlreadyInUseException;
+import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

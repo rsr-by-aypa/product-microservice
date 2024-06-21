@@ -1,7 +1,7 @@
-package com.rsr.product_microservice.port.product.user.advice;
+package com.rsr.product_microservice.port.user.advice;
 
-import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
-import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
