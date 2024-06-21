@@ -63,5 +63,12 @@ public class ProductService implements IProductService {
         productRepository.deleteById(productId);
     }
 
+    @Override
+    public Product updateProduct(Product product) throws UnknownProductIdException {
+        ProductValidator.validate(product);
+        productRepository.findById(product.getId()).orElseThrow(UnknownProductIdException::new);
+        return productRepository.save(product);
+    }
+
 
 }

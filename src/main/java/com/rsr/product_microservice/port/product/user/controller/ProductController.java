@@ -49,4 +49,10 @@ public class ProductController {
     public void deleteProduct (@RequestBody UUID productId)  throws UnknownProductIdException {
         productService.deleteProduct(productId);
     }
+
+    @PutMapping(path = "/product")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Product update(@RequestBody Product product) {
+        return productService.updateProduct(product);
+    }
 }
