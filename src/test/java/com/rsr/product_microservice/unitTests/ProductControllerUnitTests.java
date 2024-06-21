@@ -7,7 +7,6 @@ import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,8 +42,8 @@ public class ProductControllerUnitTests {
 
         @Test
         public void getAllProductsTest() throws Exception {
-            Product product_rock = ProductFactory.getExampleValidProduct();
-            Product product_stone = ProductFactory.getExampleValidProduct();
+            Product product_rock = ProductFactory.getValidExampleProduct();
+            Product product_stone = ProductFactory.getValidExampleProduct();
             product_rock.setName("Rock");
             product_stone.setName("Stone");
 
@@ -65,12 +64,12 @@ public class ProductControllerUnitTests {
 
         @Test
         void getProductByIdTest() throws Exception {
-            Product productRock = ProductFactory.getExampleValidProduct();
+            Product productRock = ProductFactory.getValidExampleProduct();
             UUID rockId = UUID.randomUUID();
             productRock.setName("Rock");
             productRock.setId(rockId);
 
-            Product productStone = ProductFactory.getExampleValidProduct();
+            Product productStone = ProductFactory.getValidExampleProduct();
             UUID stoneId = UUID.randomUUID();
             productStone.setName("Stone");
             productStone.setId(stoneId);
@@ -121,7 +120,7 @@ public class ProductControllerUnitTests {
         @Test
         @DisplayName("Properly updating an existing product - White Box")
         void updateProductProperlyTest() throws Exception {
-            Product updatedProduct = ProductFactory.getExampleValidProduct();
+            Product updatedProduct = ProductFactory.getValidExampleProduct();
 
             String requestBody = objectMapper.writeValueAsString(updatedProduct);
 

@@ -6,7 +6,7 @@ import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -35,7 +35,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("Check if valid Product is created - White Box Test")
         void createValidProductTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
             productService.createProduct(product);
             verify(productRepository).save(product);
         }
@@ -43,7 +43,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("create Product with no name (bad case) - White Box Test")
         void createProductWithInvalidNameTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
             product.setName("");
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
@@ -52,7 +52,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("create Product with negative price (bad case) - White Box Test")
         void createProductWithNegativePriceTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
             product.setPriceInEuro(-2.5);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
@@ -61,7 +61,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("create Product with more than 2 decimal places (bad case) - White Box Test")
         void createProductWithWrongPriceFormatTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
             product.setPriceInEuro(2.333);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
@@ -70,7 +70,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("create Product with negative amount (bad case) - White Box Test")
         void createProductWithNegativeAmountTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
             product.setAmount(-3);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
@@ -93,13 +93,13 @@ public class ProductServiceTests {
         @Test
         @DisplayName("Get All Products - White Box")
         void getAllProductsTest() {
-            Product productStone = ProductFactory.getExampleValidProduct();
+            Product productStone = ProductFactory.getValidExampleProduct();
             productStone.setName("Stone");
 
-            Product productRock = ProductFactory.getExampleValidProduct();
+            Product productRock = ProductFactory.getValidExampleProduct();
             productRock.setName("Rock");
 
-            Product productGemstone =  ProductFactory.getExampleValidProduct();
+            Product productGemstone =  ProductFactory.getValidExampleProduct();
             productGemstone.setName("Gemstone");
 
             List<Product> products = Arrays.asList(
@@ -115,11 +115,11 @@ public class ProductServiceTests {
         @Test
         @DisplayName("Get one Product by Id - White Box")
         void getOneProductByIdTest() throws UnknownProductIdException {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
 
             //Mock Setup
             UUID productId = UUID.randomUUID();
-            Product productWithId = ProductFactory.getExampleValidProduct();
+            Product productWithId = ProductFactory.getValidExampleProduct();
             productWithId.setId(productId);
             when(productRepository.save(product)).thenReturn(productWithId);
             when(productRepository.findById(productId)).thenReturn(Optional.of(productWithId));
@@ -135,11 +135,11 @@ public class ProductServiceTests {
         @Test
         @DisplayName("Get Product by id with wrong id")
         void getProductByWrongIdTest() {
-            Product product = ProductFactory.getExampleValidProduct();
+            Product product = ProductFactory.getValidExampleProduct();
 
             //Mock Setup
             UUID productId = UUID.randomUUID();
-            Product productWithId = ProductFactory.getExampleValidProduct();
+            Product productWithId = ProductFactory.getValidExampleProduct();
             productWithId.setId(productId);
             when(productRepository.save(product)).thenReturn(productWithId);
             when(productRepository.findById(productId)).thenReturn(Optional.of(productWithId));
@@ -176,7 +176,7 @@ public class ProductServiceTests {
         @Test
         @DisplayName("Update existing Product properly")
         void updateProductProperlyTest() {
-            Product updatedProduct = ProductFactory.getExampleValidProduct();
+            Product updatedProduct = ProductFactory.getValidExampleProduct();
             UUID productId = UUID.randomUUID();
             updatedProduct.setId(productId);
 

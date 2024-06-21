@@ -1,4 +1,4 @@
-package com.rsr.product_microservice.port.product.user.exceptions;
+package com.rsr.product_microservice.port.user.exceptions;
 
 import java.util.NoSuchElementException;
 

@@ -3,9 +3,9 @@ package com.rsr.product_microservice.core.domain.service.impl;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.product.user.exceptions.NoProductsException;
-import com.rsr.product_microservice.port.product.user.exceptions.ProductIdAlreadyInUseException;
-import com.rsr.product_microservice.port.product.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.user.exceptions.ProductIdAlreadyInUseException;
+import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -68,6 +68,17 @@ public class ProductService implements IProductService {
         ProductValidator.validate(product);
         productRepository.findById(product.getId()).orElseThrow(UnknownProductIdException::new);
         return productRepository.save(product);
+    }
+
+    @Override
+    public Product changeProductAmount(UUID productId, int subtractFromAmount) throws UnknownProductIdException {
+        if (productId == null) {
+            throw new IllegalArgumentException("Product ID must not be null");
+        }
+
+        Product productToChange = productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
+        productToChange.setAmount(productToChange.getAmount() - subtractFromAmount);
+        return productRepository.save(productToChange);
     }
 
 
