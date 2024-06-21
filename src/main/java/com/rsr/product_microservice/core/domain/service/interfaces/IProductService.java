@@ -17,4 +17,6 @@ public interface IProductService {
     Product getProductById(UUID productId) throws UnknownProductIdException;
 
     void deleteProduct(UUID productId) throws UnknownProductIdException;
+
+    Product updateProduct(Product product) throws UnknownProductIdException;
 }

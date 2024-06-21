@@ -168,4 +168,24 @@ public class ProductServiceTests {
             verify(productRepository, times(1)).deleteById(productId);
         }
     }
+
+    @Nested
+    @DisplayName("Test Cases for updating a Product with the ProductService")
+    class UpdateProductTests {
+
+        @Test
+        @DisplayName("Update existing Product properly")
+        void updateProductProperlyTest() {
+            Product updatedProduct = ProductFactory.getExampleValidProduct();
+            UUID productId = UUID.randomUUID();
+            updatedProduct.setId(productId);
+
+            when(productRepository.findById(productId)).thenReturn(Optional.of(updatedProduct));
+            when(productRepository.save(updatedProduct)).thenReturn(updatedProduct);
+
+            productService.updateProduct(updatedProduct);
+
+            verify(productRepository, times(1)).save(updatedProduct);
+        }
+    }
 }

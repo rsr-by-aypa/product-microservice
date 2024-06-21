@@ -7,6 +7,7 @@ import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -104,13 +105,31 @@ public class ProductControllerUnitTests {
             //product.setId(productId);
 
             String requestBody = objectMapper.writeValueAsString(productId);
-            System.out.println(requestBody);
 
             mockMvc.perform(MockMvcRequestBuilders.delete("/product").
                             contentType(MediaType.APPLICATION_JSON).content(requestBody)).
                     andExpect(MockMvcResultMatchers.status().isOk());
 
             Mockito.verify(mockProductService, Mockito.times(1)).deleteProduct(productId);
+        }
+    }
+
+    @Nested
+    @DisplayName("Test Cases for updating a product")
+    class UpdateProductTests {
+
+        @Test
+        @DisplayName("Properly updating an existing product - White Box")
+        void updateProductProperlyTest() throws Exception {
+            Product updatedProduct = ProductFactory.getExampleValidProduct();
+
+            String requestBody = objectMapper.writeValueAsString(updatedProduct);
+
+            mockMvc.perform(MockMvcRequestBuilders.put("/product").
+                            contentType(MediaType.APPLICATION_JSON).content(requestBody)).
+                    andExpect(MockMvcResultMatchers.status().isOk());
+
+            Mockito.verify(mockProductService, Mockito.times(1)).updateProduct(updatedProduct);
         }
     }
 
