@@ -51,7 +51,7 @@ public class ProductConsumerTests {
     @Value("${rabbitmq.product.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.amount_change.routing.key}")
+    @Value("${rabbitmq.amount_change.binding.key}")
     private String routingKey;
 
     @Test
@@ -70,7 +70,7 @@ public class ProductConsumerTests {
 
         rabbitTemplate.convertAndSend(exchange, routingKey,  productChangedDTO);
 
-        Thread.sleep(5000);
+        Thread.sleep(500);
 
         Mockito.verify(spyProductConsumer).consume(productChangedDTO);
     }
