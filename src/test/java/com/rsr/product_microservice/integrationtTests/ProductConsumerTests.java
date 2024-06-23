@@ -63,8 +63,6 @@ public class ProductConsumerTests {
         actualProduct.setAmount(actualProduct.getAmount() - changeAmount);
 
         ProductChangedDTO productChangedDTO = new ProductChangedDTO(productChangeId, changeAmount);
-
-
         Mockito.when(mockProductService.changeProductAmount(productChangeId, changeAmount)).thenReturn(actualProduct);
 
         rabbitTemplate.convertAndSend(exchange, routingKey,  productChangedDTO);
