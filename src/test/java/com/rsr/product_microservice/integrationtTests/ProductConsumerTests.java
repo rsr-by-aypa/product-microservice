@@ -67,7 +67,6 @@ public class ProductConsumerTests {
 
         Mockito.when(mockProductService.changeProductAmount(productChangeId, changeAmount)).thenReturn(actualProduct);
 
-
         rabbitTemplate.convertAndSend(exchange, routingKey,  productChangedDTO);
 
         Thread.sleep(500);
