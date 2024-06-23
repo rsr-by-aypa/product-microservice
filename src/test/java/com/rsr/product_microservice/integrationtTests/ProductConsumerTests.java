@@ -67,8 +67,10 @@ public class ProductConsumerTests {
 
         rabbitTemplate.convertAndSend(exchange, routingKey,  productChangedDTO);
 
-        Thread.sleep(500);
+        Thread.sleep(3000);
 
         Mockito.verify(spyProductConsumer).consume(productChangedDTO);
+        Mockito.verify(mockProductService, Mockito.times(1))
+                .changeProductAmount(productChangeId, changeAmount);
     }
 }

@@ -7,10 +7,12 @@ import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 
 @Service
 public class ProductConsumer {
@@ -20,9 +22,7 @@ public class ProductConsumer {
     @Autowired
     private IProductService productService;
 
-    public ProductConsumer(IProductService productService) {
-        this.productService = productService;
-    }
+    private CountDownLatch latch = new CountDownLatch(1);
 
     @RabbitListener(queues = {"${rabbitmq.product.queue.name}"})
     public void consume(ProductChangedDTO changedProduct){
@@ -31,9 +31,9 @@ public class ProductConsumer {
                     changedProduct.getProductId(), changedProduct.getAmountChange());
             LOGGER.info(String.format("Changed Product Amount -> For %s to %x",
                     updatedProduct.getId().toString(), updatedProduct.getAmount()));
-        } catch (UnknownProductIdException exception) {
-            LOGGER.error(exception.getMessage());
+        } catch (ListenerExecutionFailedException listenerExecutionFailedException) {
+            LOGGER.error(listenerExecutionFailedException.getMessage());
         }
-
     }
+
 }
