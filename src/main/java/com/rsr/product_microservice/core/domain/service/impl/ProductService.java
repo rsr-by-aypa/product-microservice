@@ -6,10 +6,12 @@ import com.rsr.product_microservice.core.domain.service.interfaces.IProductServi
 import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
 import com.rsr.product_microservice.port.user.exceptions.ProductIdAlreadyInUseException;
 import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +25,17 @@ public class ProductService implements IProductService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
+    @Autowired
+    private final ProductProducer productProducer;
+
     @Override
     public Product createProduct(Product product) throws ProductIdAlreadyInUseException {
         ProductValidator.validate(product);
         try {
             Product persistedProduct = productRepository.save(product);
             LOGGER.info(String.format("Persisted Product -> %s", persistedProduct));
+
+            productProducer.sendMessage(persistedProduct);
             return persistedProduct;
         } catch (EntityExistsException e){
             throw new ProductIdAlreadyInUseException(product.getId());

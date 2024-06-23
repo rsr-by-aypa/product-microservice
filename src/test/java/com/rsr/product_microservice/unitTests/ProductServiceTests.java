@@ -7,6 +7,7 @@ import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -22,10 +23,13 @@ public class ProductServiceTests {
 
     private IProductService productService;
 
+    private ProductProducer productProducer;
+
     @BeforeEach
     void setUp() {
         productRepository = mock(IProductRepository.class);
-        productService = new ProductService(productRepository);
+        productProducer = mock(ProductProducer.class);
+        productService = new ProductService(productRepository, productProducer);
     }
 
     @Nested
@@ -36,8 +40,12 @@ public class ProductServiceTests {
         @DisplayName("Check if valid Product is created - White Box Test")
         void createValidProductTest() {
             Product product = ProductFactory.getValidExampleProduct();
+
+            when(productRepository.save(product)).thenReturn(product);
+
             productService.createProduct(product);
             verify(productRepository).save(product);
+            verify(productProducer).sendMessage(product);
         }
 
         @Test
@@ -47,6 +55,7 @@ public class ProductServiceTests {
             product.setName("");
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
+            verify(productProducer, never()).sendMessage(product);
         }
 
         @Test
@@ -56,6 +65,7 @@ public class ProductServiceTests {
             product.setPriceInEuro(-2.5);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
+            verify(productProducer, never()).sendMessage(product);
         }
 
         @Test
@@ -65,6 +75,7 @@ public class ProductServiceTests {
             product.setPriceInEuro(2.333);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
+            verify(productProducer, never()).sendMessage(product);
         }
 
         @Test
@@ -74,6 +85,7 @@ public class ProductServiceTests {
             product.setAmount(-3);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
+            verify(productProducer, never()).sendMessage(product);
         }
 
         @Test
@@ -82,6 +94,7 @@ public class ProductServiceTests {
             Product product = null;
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
+            verify(productProducer, never()).sendMessage(product);
         }
 
     }

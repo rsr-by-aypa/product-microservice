@@ -3,7 +3,6 @@ package com.rsr.product_microservice.port.config;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,8 +18,8 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.product.exchange.name}")
     private String exchange;
 
-    @Value("${rabbitmq.amount_change.routing.key}")
-    private String routingKey;
+    @Value("${rabbitmq.amount_change.binding.key}")
+    private String bindingKey;
 
 
     @Bean
@@ -39,7 +38,7 @@ public class RabbitMQConfig {
         return BindingBuilder
                 .bind(productQueue())
                 .to(exchange())
-                .with(routingKey);
+                .with(bindingKey);
     }
 
 

@@ -25,7 +25,7 @@ public class ProductController {
     @PostMapping("/product")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody Product createProduct(@RequestBody Product product) throws ProductIdAlreadyInUseException {
-        LOGGER.info(String.format("Received Product -> %s", product));
+        LOGGER.info(String.format("Received Product in Rest-Controller -> %s", product));
         return productService.createProduct(product);
     }
 
