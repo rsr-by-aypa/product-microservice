@@ -20,7 +20,6 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_DB: ms-product
-          POSTGRES_HOST:
           POSTGRES_USER: rsr
           POSTGRES_PASSWORD: postgres
         options: >-
