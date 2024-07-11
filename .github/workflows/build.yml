@@ -63,6 +63,7 @@ jobs:
         env:
           POSTGRES_DB: ms-product
           POSTGRES_USER: rsr
+          POSTGRES_HOST: localhost
           POSTGRES_PASSWORD: postgres
           RABBITMQ_HOST: localhost
           RABBITMQ_PORT: 5672
