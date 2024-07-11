@@ -92,7 +92,7 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/rsr-by-aypa/IMAGE_NAME:latest
+          tags: ghcr.io/rsr-by-aypa/product-microservice:latest
 
       - name: Logout from GitHub Container Registry
         run: docker logout ghcr.io
