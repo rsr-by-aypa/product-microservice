@@ -64,21 +64,10 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<mainClass>com.rsr.product_microservice.ProductMicroserviceApplication</mainClass>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.1.0</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<mainClass>com.rsr.product_microservice.ProductMicroserviceApplication</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+
 		</plugins>
 	</build>
 
