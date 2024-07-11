@@ -61,7 +61,7 @@ jobs:
         run: mvn install -DskipTests
 
       - name: Run tests
-        run: mvn -B test -Dspring.datasource.url=jdbc:postgresql://localhost:5432/ms-product -DRABBITMQ_HOST=localhost -DRABBITMQ_PORT=5672
+        run: mvn -B test -Dspring.datasource.url=jdbc:postgresql://localhost:5432/ms-product -Dspring.rabbitmq.host=localhost -DRABBITMQ_PORT=5672
         env:
           POSTGRES_DB: ms-product
           POSTGRES_USER: rsr
