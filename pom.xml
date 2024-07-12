@@ -64,8 +64,10 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<mainClass>com.rsr.product_microservice.ProductMicroserviceApplication</mainClass>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
