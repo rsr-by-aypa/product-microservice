@@ -29,7 +29,7 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
-    @GetMapping("/products")
+    @GetMapping("/product/all")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<Product> getAllProducts() throws NoProductsException {
         List<Product> products = productService.getAllProducts();
