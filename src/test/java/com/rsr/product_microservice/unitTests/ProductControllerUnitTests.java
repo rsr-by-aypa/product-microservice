@@ -54,7 +54,7 @@ public class ProductControllerUnitTests {
 
             Mockito.when(mockProductService.getAllProducts()).thenReturn(products);
 
-            mockMvc.perform(MockMvcRequestBuilders.get("/products")
+            mockMvc.perform(MockMvcRequestBuilders.get("/product/all")
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(MockMvcResultMatchers.status().isOk())
                     .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(products.size()))
