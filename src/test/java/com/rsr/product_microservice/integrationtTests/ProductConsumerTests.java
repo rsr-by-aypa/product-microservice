@@ -18,15 +18,33 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.util.UUID;
 
 @SpringBootTest
+@Testcontainers
 @ExtendWith(SpringExtension.class)
 public class ProductConsumerTests {
+
+    @Container
+    public static RabbitMQContainer rabbitMQContainer = new RabbitMQContainer("rabbitmq:3.13.3");
+
+    @Container
+    private static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:13.3")
+            .withDatabaseName("test")
+            .withUsername("test")
+            .withPassword("test");
+
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
@@ -53,6 +71,23 @@ public class ProductConsumerTests {
 
     @Value("${rabbitmq.amount_change.binding.key}")
     private String routingKey;
+
+    @DynamicPropertySource
+    static void dynamicProperties(DynamicPropertyRegistry registry) {
+        String dbUrl = postgresqlContainer.getJdbcUrl();
+        String username = postgresqlContainer.getUsername();
+        String password = postgresqlContainer.getPassword();
+
+        registry.add("spring.datasource.url",
+                () -> dbUrl);
+        registry.add("spring.datasource.username",
+                () -> username);
+        registry.add("spring.datasource.password",
+                () -> password);
+
+        registry.add("spring.rabbitmq.host", rabbitMQContainer::getHost);
+        registry.add("spring.rabbitmq.port", rabbitMQContainer::getAmqpPort);
+    }
 
     @Test
     public void receiveValidChangeProductTest() throws InterruptedException, JsonProcessingException {

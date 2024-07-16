@@ -6,7 +6,8 @@ import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.shopping_cart.producer.ProductUpdateProducer;
+import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import org.junit.jupiter.api.*;
 
@@ -25,11 +26,14 @@ public class ProductServiceTests {
 
     private ProductProducer productProducer;
 
+    private ProductUpdateProducer productUpdateProducer;
+
     @BeforeEach
     void setUp() {
         productRepository = mock(IProductRepository.class);
         productProducer = mock(ProductProducer.class);
-        productService = new ProductService(productRepository, productProducer);
+        productUpdateProducer = mock(ProductUpdateProducer.class);
+        productService = new ProductService(productRepository, productProducer, productUpdateProducer);
     }
 
     @Nested
@@ -45,7 +49,6 @@ public class ProductServiceTests {
 
             productService.createProduct(product);
             verify(productRepository).save(product);
-            verify(productProducer).sendMessage(product);
         }
 
         @Test

@@ -1,4 +1,4 @@
-package com.rsr.product_microservice.port.user.exceptions;
+package com.rsr.product_microservice.port.utils.exceptions;
 
 import java.util.UUID;
 

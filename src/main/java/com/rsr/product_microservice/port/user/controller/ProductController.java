@@ -2,9 +2,8 @@ package com.rsr.product_microservice.port.user.controller;
 
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
-import com.rsr.product_microservice.port.user.exceptions.ProductIdAlreadyInUseException;
-import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.utils.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +20,6 @@ public class ProductController {
     private IProductService productService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-
-    @PostMapping("/product")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Product createProduct(@RequestBody Product product) throws ProductIdAlreadyInUseException {
-        LOGGER.info(String.format("Received Product in Rest-Controller -> %s", product));
-        return productService.createProduct(product);
-    }
 
     @GetMapping("/product/all")
     @ResponseStatus(HttpStatus.OK)
@@ -49,9 +41,5 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    @PutMapping(path = "/product")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Product update(@RequestBody Product product) {
-        return productService.updateProduct(product);
-    }
+
 }
