@@ -30,7 +30,7 @@ public class RabbitMQConfig {
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(exchange);
+        return new TopicExchange(exchange, true, false);
     }
 
     @Bean
