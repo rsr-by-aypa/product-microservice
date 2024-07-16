@@ -3,7 +3,6 @@ package com.rsr.product_microservice.port.user.consumer;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.user.dto.ProductChangedDTO;
-import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,7 +10,6 @@ import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 @Service

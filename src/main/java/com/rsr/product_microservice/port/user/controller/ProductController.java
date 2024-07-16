@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import com.rsr.product_microservice.port.utils.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class ProductController {
             @ApiResponse(responseCode = "200", description = "Liste aller Produkte", content = @Content(schema = @Schema(implementation = Product.class))),
             @ApiResponse(responseCode = "404", description = "Keine Produkte gefunden", content = @Content)
     })
-    @GetMapping("/products")
+    @GetMapping("/product/all")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody List<Product> getAllProducts() throws NoProductsException {
         List<Product> products = productService.getAllProducts();
@@ -76,15 +78,5 @@ public class ProductController {
         productService.deleteProduct(productId);
     }
 
-    @Operation(summary = "Aktualisiert ein Produkt", description = "Aktualisiert die Details eines bestehenden Produkts")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Produkt aktualisiert", content = @Content(schema = @Schema(implementation = Product.class))),
-            @ApiResponse(responseCode = "404", description = "Produkt nicht gefunden", content = @Content)
-    })
-    @PutMapping(path = "/product")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Product update(@RequestBody Product product) {
-        return productService.updateProduct(product);
-    }
 }
 

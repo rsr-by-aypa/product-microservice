@@ -3,9 +3,10 @@ package com.rsr.product_microservice.core.domain.service.impl;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.user.exceptions.NoProductsException;
-import com.rsr.product_microservice.port.user.exceptions.ProductIdAlreadyInUseException;
-import com.rsr.product_microservice.port.user.exceptions.UnknownProductIdException;
+import com.rsr.product_microservice.port.shopping_cart.producer.ProductUpdateProducer;
+import com.rsr.product_microservice.port.utils.exceptions.NoProductsException;
+import com.rsr.product_microservice.port.utils.exceptions.ProductIdAlreadyInUseException;
+import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import io.swagger.annotations.*;
 import jakarta.persistence.EntityExistsException;
@@ -30,6 +31,9 @@ public class ProductService implements IProductService {
     @Autowired
     private final ProductProducer productProducer;
 
+    @Autowired
+    private final ProductUpdateProducer productUpdateProducer;
+
     @Override
     @ApiOperation(value = "Create a new product", response = Product.class)
     @ApiResponses(value = {
@@ -42,7 +46,6 @@ public class ProductService implements IProductService {
             Product persistedProduct = productRepository.save(product);
             LOGGER.info(String.format("Persisted Product -> %s", persistedProduct));
 
-            productProducer.sendMessage(persistedProduct);
             return persistedProduct;
         } catch (EntityExistsException e){
             throw new ProductIdAlreadyInUseException(product.getId());
@@ -118,6 +121,16 @@ public class ProductService implements IProductService {
         Product productToChange = productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
         productToChange.setAmount(productToChange.getAmount() - subtractFromAmount);
         return productRepository.save(productToChange);
+    }
+
+    @Override
+    public void sendCreatedMessage(Product product) {
+        productProducer.sendMessage(product);
+    }
+
+    @Override
+    public void sendUpdatedMessage(Product product) {
+        productUpdateProducer.sendMessage(product);
     }
 }
 
