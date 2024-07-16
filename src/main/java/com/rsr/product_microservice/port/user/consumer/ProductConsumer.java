@@ -2,7 +2,7 @@ package com.rsr.product_microservice.port.user.consumer;
 
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
-import com.rsr.product_microservice.port.user.dto.ProductChangedDTO;
+import com.rsr.product_microservice.port.user.dto.ProductAmountChangedDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -23,7 +23,7 @@ public class ProductConsumer {
     private CountDownLatch latch = new CountDownLatch(1);
 
     @RabbitListener(queues = {"${rabbitmq.product.queue.name}"})
-    public void consume(ProductChangedDTO changedProduct){
+    public void consume(ProductAmountChangedDTO changedProduct){
         try {
             Product updatedProduct = productService.changeProductAmount(
                     changedProduct.getProductId(), changedProduct.getAmountChange());
