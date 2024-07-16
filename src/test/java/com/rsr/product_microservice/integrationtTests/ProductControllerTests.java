@@ -10,13 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.RabbitMQContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
+@Testcontainers
 @AutoConfigureMockMvc
 public class ProductControllerTests {
+
+    @Container
+    public static RabbitMQContainer rabbitMQContainer = new RabbitMQContainer("rabbitmq:3.13.3");
+
+    @Container
+    private static PostgreSQLContainer<?> postgresqlContainer = new PostgreSQLContainer<>("postgres:13.3")
+            .withDatabaseName("test")
+            .withUsername("test")
+            .withPassword("test");
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,6 +40,22 @@ public class ProductControllerTests {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @DynamicPropertySource
+    static void dynamicProperties(DynamicPropertyRegistry registry) {
+        String dbUrl = postgresqlContainer.getJdbcUrl();
+        String username = postgresqlContainer.getUsername();
+        String password = postgresqlContainer.getPassword();
+
+        registry.add("spring.datasource.url",
+                () -> dbUrl);
+        registry.add("spring.datasource.username",
+                () -> username);
+        registry.add("spring.datasource.password",
+                () -> password);
+
+        registry.add("spring.rabbitmq.host", rabbitMQContainer::getHost);
+        registry.add("spring.rabbitmq.port", rabbitMQContainer::getAmqpPort);
+    }
 
     @Nested
     @DisplayName("Test cases for posting a product via RestController")
@@ -36,7 +68,7 @@ public class ProductControllerTests {
             String requestBody = objectMapper.writeValueAsString(product);
             System.out.println(requestBody);
 
-            mockMvc.perform(MockMvcRequestBuilders.post("/product").
+            mockMvc.perform(MockMvcRequestBuilders.post("/admin/product").
                     contentType(MediaType.APPLICATION_JSON).content(requestBody)).
                     andExpect(MockMvcResultMatchers.status().isCreated()).
                     andExpect(MockMvcResultMatchers.jsonPath("$.name").value(product.getName())).
