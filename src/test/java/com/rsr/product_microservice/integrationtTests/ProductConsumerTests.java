@@ -7,10 +7,9 @@ import com.rsr.product_microservice.ProductFactory;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.user.consumer.ProductConsumer;
-import com.rsr.product_microservice.port.user.dto.ProductChangedDTO;
+import com.rsr.product_microservice.port.user.dto.ProductAmountChangedDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.util.UUID;
 
@@ -97,14 +95,14 @@ public class ProductConsumerTests {
         actualProduct.setId(productChangeId);
         actualProduct.setAmount(actualProduct.getAmount() - changeAmount);
 
-        ProductChangedDTO productChangedDTO = new ProductChangedDTO(productChangeId, changeAmount);
+        ProductAmountChangedDTO productAmountChangedDTO = new ProductAmountChangedDTO(productChangeId, changeAmount);
         Mockito.when(mockProductService.changeProductAmount(productChangeId, changeAmount)).thenReturn(actualProduct);
 
-        rabbitTemplate.convertAndSend(exchange, routingKey,  productChangedDTO);
+        rabbitTemplate.convertAndSend(exchange, routingKey, productAmountChangedDTO);
 
         Thread.sleep(3000);
 
-        Mockito.verify(spyProductConsumer).consume(productChangedDTO);
+        Mockito.verify(spyProductConsumer).consume(productAmountChangedDTO);
         Mockito.verify(mockProductService, Mockito.times(1))
                 .changeProductAmount(productChangeId, changeAmount);
     }
