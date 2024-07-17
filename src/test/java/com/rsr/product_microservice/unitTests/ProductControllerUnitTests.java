@@ -141,7 +141,7 @@ public class ProductControllerUnitTests {
 
             String requestBody = objectMapper.writeValueAsString(productId);
 
-            mockMvc.perform(MockMvcRequestBuilders.delete("/product").
+            mockMvc.perform(MockMvcRequestBuilders.delete("/admin/product").
                             contentType(MediaType.APPLICATION_JSON).content(requestBody)).
                     andExpect(MockMvcResultMatchers.status().isOk());
 
