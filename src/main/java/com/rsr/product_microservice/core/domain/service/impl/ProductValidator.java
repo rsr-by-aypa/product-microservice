@@ -8,7 +8,7 @@ public class ProductValidator {
         if (product == null) {
             throw new IllegalArgumentException("Product must not be null");
         }
-        if (product.getAmount() < 0) {
+        if (product.getNumberInStock() < 0) {
             throw new IllegalArgumentException("Product-Amount must be positive");
         }
         if (product.getPriceInEuro() <= 0.0) {

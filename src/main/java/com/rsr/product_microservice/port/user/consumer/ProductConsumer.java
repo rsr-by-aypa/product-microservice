@@ -28,7 +28,7 @@ public class ProductConsumer {
             Product updatedProduct = productService.changeProductAmount(
                     changedProduct.getProductId(), changedProduct.getAmountChange());
             LOGGER.info(String.format("Changed Product Amount -> For %s to %x",
-                    updatedProduct.getId().toString(), updatedProduct.getAmount()));
+                    updatedProduct.getId().toString(), updatedProduct.getNumberInStock()));
         } catch (ListenerExecutionFailedException listenerExecutionFailedException) {
             LOGGER.error(listenerExecutionFailedException.getMessage());
         }

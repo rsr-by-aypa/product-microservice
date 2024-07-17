@@ -20,7 +20,7 @@ public interface IProductService {
 
     Product updateProduct(Product product) throws UnknownProductIdException;
 
-    Product changeProductAmount(UUID productId, int subtractFromAmount) throws UnknownProductIdException;
+    Product changeProductAmount(UUID productId, int amountChange) throws UnknownProductIdException;
 
     void sendCreatedMessage(Product product);
 

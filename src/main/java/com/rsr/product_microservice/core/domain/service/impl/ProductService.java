@@ -113,13 +113,13 @@ public class ProductService implements IProductService {
         @ApiResponse(code = 200, message = "Successfully changed product amount"),
         @ApiResponse(code = 404, message = "Product not found")
     })
-    public Product changeProductAmount(UUID productId, int subtractFromAmount) throws UnknownProductIdException {
+    public Product changeProductAmount(UUID productId, int amountChange) throws UnknownProductIdException {
         if (productId == null) {
             throw new IllegalArgumentException("Product ID must not be null");
         }
 
         Product productToChange = productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
-        productToChange.setAmount(productToChange.getAmount() - subtractFromAmount);
+        productToChange.setNumberInStock(productToChange.getNumberInStock() + amountChange);
         return productRepository.save(productToChange);
     }
 
