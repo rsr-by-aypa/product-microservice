@@ -93,7 +93,7 @@ public class ProductConsumerTests {
         int changeAmount = 4;
         Product actualProduct = ProductFactory.getValidExampleProduct();
         actualProduct.setId(productChangeId);
-        actualProduct.setAmount(actualProduct.getAmount() - changeAmount);
+        actualProduct.setNumberInStock(actualProduct.getNumberInStock() - changeAmount);
 
         ProductAmountChangedDTO productAmountChangedDTO = new ProductAmountChangedDTO(productChangeId, changeAmount);
         Mockito.when(mockProductService.changeProductAmount(productChangeId, changeAmount)).thenReturn(actualProduct);

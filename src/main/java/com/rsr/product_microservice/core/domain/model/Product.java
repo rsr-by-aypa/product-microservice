@@ -22,7 +22,7 @@ public class Product {
 
     private double priceInEuro;
 
-    private int amount;
+    private int numberInStock;
 
     private String imageLink;
 
@@ -32,13 +32,13 @@ public class Product {
 
     private double diameterInCm;
 
-    public Product(String name, String description, double priceInEuro, int amount, String imageLink, double weightInGram,
+    public Product(String name, String description, double priceInEuro, int numberInStock, String imageLink, double weightInGram,
                    String color, double diameterInCm) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.description = description;
         this.priceInEuro = priceInEuro;
-        this.amount = amount;
+        this.numberInStock = numberInStock;
         this.imageLink = imageLink;
         this.weightInGram = weightInGram;
         this.color = color;

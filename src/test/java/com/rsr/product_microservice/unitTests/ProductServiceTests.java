@@ -85,7 +85,7 @@ public class ProductServiceTests {
         @DisplayName("create Product with negative amount (bad case) - White Box Test")
         void createProductWithNegativeAmountTest() {
             Product product = ProductFactory.getValidExampleProduct();
-            product.setAmount(-3);
+            product.setNumberInStock(-3);
             Assertions.assertThrows(IllegalArgumentException.class, () -> productService.createProduct(product));
             verify(productRepository, never()).save(product);
             verify(productProducer, never()).sendMessage(product);
