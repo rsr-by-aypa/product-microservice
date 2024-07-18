@@ -1,4 +1,4 @@
-package com.rsr.product_microservice.integrationtTests;
+package com.rsr.product_microservice.integrationTests;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
