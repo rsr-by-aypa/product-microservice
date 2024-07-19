@@ -4,14 +4,13 @@ import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.shopping_cart.producer.ProductUpdateProducer;
+import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import com.rsr.product_microservice.port.utils.exceptions.NoProductsException;
 import com.rsr.product_microservice.port.utils.exceptions.ProductIdAlreadyInUseException;
 import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
-import com.rsr.product_microservice.port.user.producer.ProductProducer;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,10 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class ProductService implements IProductService {
 
     private final IProductRepository productRepository;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
     @Autowired
     private final ProductProducer productProducer;
@@ -37,16 +35,16 @@ public class ProductService implements IProductService {
         ProductValidator.validate(product);
         try {
             Product persistedProduct = productRepository.save(product);
-            LOGGER.info(String.format("Persisted Product -> %s", persistedProduct));
+            log.info(String.format("Persisted Product -> %s", persistedProduct));
 
             return persistedProduct;
-        } catch (EntityExistsException e){
+        } catch (EntityExistsException e) {
             throw new ProductIdAlreadyInUseException(product.getId());
         }
     }
 
     @Override
-    public List<Product> getAllProducts()  throws NoProductsException {
+    public List<Product> getAllProducts() throws NoProductsException {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
             throw new NoProductsException();
@@ -71,13 +69,16 @@ public class ProductService implements IProductService {
         }
         productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
         productRepository.deleteById(productId);
+        log.info("Deleted Product: {}", productId);
     }
 
     @Override
     public Product updateProduct(Product product) throws UnknownProductIdException {
         ProductValidator.validate(product);
         productRepository.findById(product.getId()).orElseThrow(UnknownProductIdException::new);
-        return productRepository.save(product);
+        Product updatedProduct = productRepository.save(product);
+        log.info("Updated Product: {}", updatedProduct);
+        return updatedProduct;
     }
 
     @Override
@@ -88,7 +89,9 @@ public class ProductService implements IProductService {
 
         Product productToChange = productRepository.findById(productId).orElseThrow(UnknownProductIdException::new);
         productToChange.setNumberInStock(productToChange.getNumberInStock() + amountChange);
-        return productRepository.save(productToChange);
+        Product changedProduct = productRepository.save(productToChange);
+        log.info("Changed Product Amount for: {}", changedProduct);
+        return changedProduct;
     }
 
     @Override

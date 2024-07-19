@@ -23,10 +23,7 @@ import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @SpringBootTest
 @Testcontainers
@@ -86,7 +83,7 @@ public class ProductControllerTests {
             System.out.println(requestBody);
 
             mockMvc.perform(MockMvcRequestBuilders.post("/admin/product").
-                    contentType(MediaType.APPLICATION_JSON).content(requestBody)).
+                            contentType(MediaType.APPLICATION_JSON).content(requestBody)).
                     andExpect(MockMvcResultMatchers.status().isCreated()).
                     andExpect(MockMvcResultMatchers.jsonPath("$.name").value(product.getName())).
                     andExpect(MockMvcResultMatchers.jsonPath("$.priceInEuro").value(product.getPriceInEuro())).
@@ -142,7 +139,8 @@ public class ProductControllerTests {
             String productListJson = mockMvc.perform(MockMvcRequestBuilders.get("/product/all"))
                     .andReturn().getResponse().getContentAsString();
 
-            List<Product> productListFromDB = objectMapper.readValue(productListJson, new TypeReference<List<Product>>() {});
+            List<Product> productListFromDB = objectMapper.readValue(productListJson, new TypeReference<List<Product>>() {
+            });
 
             System.out.println(productList.stream().map(p -> p.getName()).toList());
             System.out.println(productListFromDB.stream().map(p -> p.getName()).toList());
