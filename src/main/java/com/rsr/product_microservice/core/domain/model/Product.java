@@ -32,8 +32,8 @@ public class Product {
 
     private double diameterInCm;
 
-    public Product(String name, String description, double priceInEuro, int numberInStock, String imageLink, double weightInGram,
-                   String color, double diameterInCm) {
+    public Product(String name, String description, double priceInEuro, int numberInStock, String imageLink,
+                   double weightInGram, String color, double diameterInCm) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.description = description;

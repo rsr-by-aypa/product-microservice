@@ -25,8 +25,6 @@ import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.mockito.ArgumentMatchers.any;
-
 import java.util.UUID;
 
 @SpringBootTest

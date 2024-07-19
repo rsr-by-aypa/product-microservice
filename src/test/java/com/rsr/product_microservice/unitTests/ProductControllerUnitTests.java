@@ -2,7 +2,6 @@ package com.rsr.product_microservice.unitTests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rsr.product_microservice.ProductFactory;
-import com.rsr.product_microservice.TestContainerConfiguration;
 import com.rsr.product_microservice.core.domain.model.Product;
 import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import org.junit.jupiter.api.DisplayName;
@@ -14,10 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -37,7 +33,6 @@ import java.util.UUID;
 @AutoConfigureMockMvc
 @Testcontainers
 @ActiveProfiles("test")
-@Import(TestContainerConfiguration.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductControllerUnitTests {
 
@@ -55,7 +50,6 @@ public class ProductControllerUnitTests {
             .withDatabaseName("test")
             .withUsername("test")
             .withPassword("test");
-
 
 
     @DynamicPropertySource

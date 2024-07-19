@@ -14,21 +14,22 @@ public class ProductNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(value = UnknownProductIdException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String unknownProductIdHandler(UnknownProductIdException e){
+    String unknownProductIdHandler(UnknownProductIdException e) {
         return e.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(value = IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String illegalArgumentHandler(IllegalArgumentException e){
+    String illegalArgumentHandler(IllegalArgumentException e) {
         return e.getMessage();
     }
 
     @ResponseBody
     @ExceptionHandler(value = NoProductsException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String noProductsHandler(NoProductsException e){
+    String noProductsHandler(NoProductsException e) {
         return e.getMessage();
     }
+
 }

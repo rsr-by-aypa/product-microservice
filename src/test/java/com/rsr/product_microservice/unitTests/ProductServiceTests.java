@@ -7,8 +7,8 @@ import com.rsr.product_microservice.core.domain.service.impl.ProductService;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductRepository;
 import com.rsr.product_microservice.core.domain.service.interfaces.IProductService;
 import com.rsr.product_microservice.port.shopping_cart.producer.ProductUpdateProducer;
-import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import com.rsr.product_microservice.port.user.producer.ProductProducer;
+import com.rsr.product_microservice.port.utils.exceptions.UnknownProductIdException;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
@@ -115,7 +115,7 @@ public class ProductServiceTests {
             Product productRock = ProductFactory.getValidExampleProduct();
             productRock.setName("Rock");
 
-            Product productGemstone =  ProductFactory.getValidExampleProduct();
+            Product productGemstone = ProductFactory.getValidExampleProduct();
             productGemstone.setName("Gemstone");
 
             List<Product> products = Arrays.asList(

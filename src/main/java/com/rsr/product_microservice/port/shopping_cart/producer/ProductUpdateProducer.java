@@ -23,6 +23,10 @@ public class ProductUpdateProducer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
+    /**
+     * Send Message when product has been updated
+     * @param product that has been updated
+     */
     public void sendMessage(Product product){
         LOGGER.info(String.format("Product-Update-Message sent -> %s", product.toString()));
         rabbitTemplate.convertAndSend(exchange, routingKey, product);
